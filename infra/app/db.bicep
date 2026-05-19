@@ -117,6 +117,23 @@ resource cosmosDbContainer 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/c
   }
 }
  
+
+resource cosmosDbLeasesContainer 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers@2024-11-15' = {
+  parent: cosmosDbDatabase
+  name: 'leases'
+  properties: {
+    resource: {
+      id: 'leases'
+      partitionKey: {
+        paths: [
+          '/id'
+        ]
+        kind: 'Hash'
+      }
+    }
+  }
+}
+
 output cosmosDbName string = cosmosDbDatabase.name
 output cosmosDbAccountName string = cosmosDbAccount.name
 output cosmosDbContainer string = cosmosDbContainer.name
